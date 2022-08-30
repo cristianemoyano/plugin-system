@@ -8,6 +8,15 @@ from plugin_manager import functions
 class ModuleInterface:
     """Represents a plugin interface"""
 
+    # Optional: Set this attribute in the __init__.py file of your root plugin directory to specify the main plugin file name
+    # in case that this file name is different from the root plugin directory name: my_plugin_folder/main.py
+    # example for a main.py:
+    # 
+    # PLUGIN_MODULE = 'main'
+    # 
+    # The default value is the root plugin directory name: PLUGIN_MODULE = '<plugin directory name>'
+    PLUGIN_MODULE_KEYWORD: str = 'PLUGIN_MODULE'
+
     @staticmethod
     def register() -> None:
         """Register the plugin"""
@@ -26,7 +35,10 @@ def load_plugins(plugins: list[str]) -> None:
     """Loads the plugins defined in the plugins list."""
     for plugin_file in plugins:
         # Import plugin
-        plugin_module: ModuleInterface = import_module(plugin_file)
+        plugin_root_module: ModuleInterface = import_module(plugin_file)
+        plugin_main_file_name: str= getattr(plugin_root_module, ModuleInterface.PLUGIN_MODULE_KEYWORD, plugin_file.split('.')[-1])
+        plugin_module: ModuleInterface = import_module(f'{plugin_file}.{plugin_main_file_name}')
+
         # Get the main plugin class
         plugin_class: PluginInterface = plugin_module.register()
         # Register the plugin
