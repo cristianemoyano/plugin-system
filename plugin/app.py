@@ -1,6 +1,6 @@
 """
-Basic example showing how to create objects from data using a dynamic factory with
-register/unregister methods.
+Basic example showing how to run custom routines from data using a dynamic factory with
+activate/desactivate methods.
 """
 
 import json
