@@ -3,8 +3,6 @@ Basic example showing how to run custom routines from data using a dynamic facto
 activate/desactivate methods.
 """
 
-import json
-
 from plugin_manager import functions, loader
 
 import os
