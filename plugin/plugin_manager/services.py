@@ -6,8 +6,13 @@ import zipfile
 import requests
 from urllib import response
 
-
 class PackageService:
+
+    @staticmethod
+    def list_packages(path) -> list:
+        dir_list: list[str] = os.listdir(path)
+        dir_list.remove('__init__.py')
+        return map(lambda directory: f'{path}.{directory}', dir_list)
 
     @staticmethod
     def download_package(url: str, output_dir:str) -> None:
