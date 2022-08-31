@@ -1,9 +1,11 @@
-<!DOCTYPE html>
-<html>
-<body>
+<h1>Members</h1>
 
-<h1>Hello World!</h1>
-<p>Welcome to my first Django project!</p>
-
-</body>
-</html>
+<table border="1">
+{% for x in mymembers %}
+<tr>
+<td>{{ x.id }}</td>
+<td>{{ x.firstname }}</td>
+<td>{{ x.lastname }}</td>
+</tr>
+{% endfor %}
+</table>
