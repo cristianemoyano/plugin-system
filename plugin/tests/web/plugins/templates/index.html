@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<main class="px-3">
+    <h1>Plugin list</h1>
+    <p class="lead">These are the plugins found.</p>
+    <table class="table text-white">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Version</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for p in plugins %}
+          <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.version }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</main>
+
+{% endblock %}

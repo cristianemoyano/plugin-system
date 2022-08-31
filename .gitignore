@@ -2,3 +2,5 @@
 .DS_Store
 venv
 *.sqlite3
+
+__pycache__
