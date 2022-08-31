@@ -16,7 +16,7 @@ setup_path()
 from plugin_manager.services import PackageService
 
 def index(request) -> HttpResponse:
-  plugins = list(PackageService.list_packages('packages'))
+  plugins: list = PackageService.list_packages('packages')
   records: Any = Plugins.objects.all().values()
   template: Any = loader.get_template('index.html')
   context: dict[str, Any] = {
@@ -24,3 +24,25 @@ def index(request) -> HttpResponse:
     'plugins': plugins,
   }
   return HttpResponse(template.render(context, request))
+
+
+def download(request) -> HttpResponse:
+  package: str = ''
+  if request.method == 'POST':
+        package: str = request.POST.get('package')
+  html: str = f"Download Success: {package}"
+  return HttpResponse(html)
+
+def upload(request) -> HttpResponse:
+  package: str = ''
+  if request.method == 'POST':
+        package: str = request.POST.get('package')
+  html: str = f"Upload Success: {package}"
+  return HttpResponse(html)
+
+def zip(request) -> HttpResponse:
+  package: str = ''
+  if request.method == 'POST':
+        package: str = request.POST.get('package')
+  html: str = f"Zip Success: {package}"
+  return HttpResponse(html)

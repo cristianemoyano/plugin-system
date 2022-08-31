@@ -30,15 +30,18 @@ def import_module(name: str) -> ModuleInterface:
     """Imports a module given a name."""
     return importlib.import_module(name)  # type: ignore
 
+def import_plugin_module(plugin_module: str) -> ModuleInterface:
+    plugin_root_module: ModuleInterface = import_module(plugin_module)
+    plugin_main_file_name: str= getattr(plugin_root_module, ModuleInterface.PLUGIN_MODULE_KEYWORD, plugin_module.split('.')[-1])
+    plugin_module: ModuleInterface = import_module(f'{plugin_module}.{plugin_main_file_name}')
+    return plugin_module
+
 
 def load_plugins(plugins: list[str]) -> None:
     """Loads the plugins defined in the plugins list."""
     for plugin_file in plugins:
         # Import plugin
-        plugin_root_module: ModuleInterface = import_module(plugin_file)
-        plugin_main_file_name: str= getattr(plugin_root_module, ModuleInterface.PLUGIN_MODULE_KEYWORD, plugin_file.split('.')[-1])
-        plugin_module: ModuleInterface = import_module(f'{plugin_file}.{plugin_main_file_name}')
-
+        plugin_module: ModuleInterface = import_plugin_module(plugin_file)
         # Get the main plugin class
         plugin_class: PluginInterface = plugin_module.register()
         # Register the plugin

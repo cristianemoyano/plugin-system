@@ -66,3 +66,14 @@ class MainPlugin(PluginInterface):
     @staticmethod
     def register_uninstall_hook() -> None:
         logger.debug(f"register_uninstall_hook: {MainPlugin.Meta.plugin_name}")
+
+
+def get_plugin_metadata(plugin_class: PluginInterface) -> dict[str, str]:
+    return {
+        'name': plugin_class.Meta.plugin_name,
+        'plugin_uri': plugin_class.Meta.plugin_uri,
+        'plugin_description': plugin_class.Meta.plugin_description,
+        'version': plugin_class.Meta.version,
+        'author': plugin_class.Meta.author,
+        'license': plugin_class.Meta.license,
+    }

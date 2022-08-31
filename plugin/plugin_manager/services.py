@@ -6,13 +6,24 @@ import zipfile
 import requests
 from urllib import response
 
+
+from plugin_manager import interface
+from plugin_manager import loader
+
 class PackageService:
 
     @staticmethod
     def list_packages(path) -> list:
         dir_list: list[str] = os.listdir(path)
         dir_list.remove('__init__.py')
-        return map(lambda directory: f'{path}.{directory}', dir_list)
+        plugin_list: list = []
+        for plugin_import in map(lambda directory: f'{path}.{directory}', dir_list):
+            plugin_module: loader.ModuleInterface = loader.import_plugin_module(plugin_import)
+            # Get the main plugin class
+            plugin_class: interface.PluginInterface = plugin_module.register()
+            plugin_meta: dict[str, str] = interface.get_plugin_metadata(plugin_class)
+            plugin_list.append(plugin_meta)
+        return plugin_list
 
     @staticmethod
     def download_package(url: str, output_dir:str) -> None:

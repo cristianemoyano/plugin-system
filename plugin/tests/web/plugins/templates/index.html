@@ -4,27 +4,115 @@
 {% block content %}
 
 <main class="px-3">
-    <h1>Plugin list</h1>
-    <p class="lead">These are the plugins found.</p>
+    <h1>Package list</h1>
+
+
+
+
+
+
+    
+
+    <div class="row">
+      <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+          <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">Download</a>
+          <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">Upload</a>
+          <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Zip</a>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+            <!-- DOWNLOAD FORM -->
+            <form id="download-form">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="package-name" class="form-label">Download Package name</label>
+                <input type="text" class="form-control" id="download-package-name" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Download</button>
+            </form>
+            <!-- END FORM -->
+          </div>
+          <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+            <!-- UPLOAD FORM -->
+            <form id="upload-form">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="package-name" class="form-label">Upload Package name</label>
+                <input type="text" class="form-control" id="upload-package-name" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+            <!-- END FORM -->
+          </div>
+          <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+            <!-- ZIP FORM -->
+            <form id="zip-form">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="package-name" class="form-label">Zip Package name</label>
+                <input type="text" class="form-control" id="zip-package-name" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Zip</button>
+            </form>
+            <!-- END FORM -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <p class="lead mt-3">These are the plugins found in the package folder.</p>
     <table class="table text-white">
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th scope="col">Plugin URI</th>
+            <th scope="col">Description</th>
             <th scope="col">Version</th>
+            <th scope="col">Author</th>
+            <th scope="col">License</th>
+
           </tr>
         </thead>
         <tbody>
-            {% for p in records %}
+            {% for p in plugins %}
           <tr>
-            <td>{{ p.id }}</td>
             <td>{{ p.name }}</td>
+            <td>{{ p.plugin_uri }}</td>
+            <td>{{ p.plugin_description }}</td>
             <td>{{ p.version }}</td>
+            <td>{{ p.author }}</td>
+            <td>{{ p.license }}</td>
+
           </tr>
           {% endfor %}
         </tbody>
       </table>
-      {{ plugins }}
+      <hr>
+      <h1>Plugin records</h1>
+      <p class="lead">These are the plugins found in the database.</p>
+      <table class="table text-white">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Version</th>
+            </tr>
+          </thead>
+          <tbody>
+              {% for p in records %}
+            <tr>
+              <td>{{ p.id }}</td>
+              <td>{{ p.name }}</td>
+              <td>{{ p.version }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
 </main>
 
 {% endblock %}

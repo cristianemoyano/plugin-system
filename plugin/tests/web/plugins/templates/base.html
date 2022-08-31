@@ -92,5 +92,104 @@
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
 </body>
+{% block javascript %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        function download_package() {
+            $.ajax({
+                url: "{% url 'download' %}",
+                type: "POST", // http method
+                data: {
+                    package: $('#download-package-name').val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                }, // data sent with the post request
+
+                // handle a successful response
+                success: function (json) {
+                    $('#download-package-name').val(''); // remove the value from the input
+                    console.log(json); // log the returned json to the console
+                    console.log("success"); // another sanity check
+                },
+
+                // handle a non-successful response
+                error: function (xhr, errmsg, err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+        };
+        function upload_package() {
+            $.ajax({
+                url: "{% url 'upload' %}",
+                type: "POST", // http method
+                data: {
+                    package: $('#upload-package-name').val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                }, // data sent with the post request
+
+                // handle a successful response
+                success: function (json) {
+                    $('#upload-package-name').val(''); // remove the value from the input
+                    console.log(json); // log the returned json to the console
+                    console.log("success"); // another sanity check
+                },
+
+                // handle a non-successful response
+                error: function (xhr, errmsg, err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+        };
+        function zip_package() {
+            $.ajax({
+                url: "{% url 'zip' %}",
+                type: "POST", // http method
+                data: {
+                    package: $('#zip-package-name').val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                }, // data sent with the post request
+
+                // handle a successful response
+                success: function (json) {
+                    $('#zip-package-name').val(''); // remove the value from the input
+                    console.log(json); // log the returned json to the console
+                    console.log("success"); // another sanity check
+                },
+
+                // handle a non-successful response
+                error: function (xhr, errmsg, err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+        };
+        $('#download-form').on('submit', function (event) {
+            event.preventDefault();
+            console.log("form submitted!")  // sanity check
+            download_package();
+        });
+        $('#upload-form').on('submit', function (event) {
+            event.preventDefault();
+            console.log("form submitted!")  // sanity check
+            upload_package();
+        });
+        $('#zip-form').on('submit', function (event) {
+            event.preventDefault();
+            console.log("form submitted!")  // sanity check
+            zip_package();
+        });
+
+
+
+    })
+
+</script>
+{% endblock javascript %}
 
 </html>
