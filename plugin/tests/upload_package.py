@@ -8,16 +8,13 @@ Publish API:
 - PUT /projects/:id/packages/generic/:package_name/:package_version/:file_name?status=:status
 
 """
-import os
-import requests
+from app import setup_path
 from urllib import response
 
-def upload_package(url: str, path_file: str) -> response:
-    headers: dict = {
-        'PRIVATE-TOKEN': os.environ.get('GITLAB_PRIVATE_TOKEN')
-    }
-    fileobj: object = open(path_file, 'rb')
-    return requests.put(url, headers=headers, data=fileobj.read())
+setup_path()
+
+from plugin_manager.services import PackageService
+
 
 if __name__ == "__main__":
     PATH_FILE: str = 'hello.zip'
@@ -27,5 +24,5 @@ if __name__ == "__main__":
     FILE_NAME: str = 'hello.zip'
     UPLOAD_API_URL: str = f'https://gitlab.com/api/v4/projects/{PROJECT_ID}/packages/generic/{PACKAGE_NAME}/{PACKAGE_VERSION}/{FILE_NAME}'
 
-    res: response = upload_package(UPLOAD_API_URL, PATH_FILE)
+    res: response = PackageService.upload_package(UPLOAD_API_URL, PATH_FILE)
     print(res.content)

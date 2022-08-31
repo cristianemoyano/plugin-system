@@ -1,10 +1,6 @@
 from dataclasses import dataclass
 from typing import Protocol
 
-import logging
-
-logger: logging.Logger = logging.getLogger(__name__)
-
 
 @dataclass
 class HelloPlugin:
@@ -19,30 +15,30 @@ class HelloPlugin:
 
     @staticmethod
     def register_activation_hook() -> None:
-        logger.debug(f"register_activation_hook: {HelloPlugin.Meta.plugin_name}")
+        print(f"register_activation_hook: {HelloPlugin.Meta.plugin_name}")
 
     @staticmethod
     def register_deactivation_hook() -> None:
-        logger.debug(f"register_deactivation_hook: {HelloPlugin.Meta.plugin_name}")
+        print(f"register_deactivation_hook: {HelloPlugin.Meta.plugin_name}")
 
     @staticmethod
     def register_uninstall_hook() -> None:
-        logger.debug(f"register_uninstall_hook: {HelloPlugin.Meta.plugin_name}")
+        print(f"register_uninstall_hook: {HelloPlugin.Meta.plugin_name}")
 
 def register() -> Protocol:
     return HelloPlugin
 
 
 def hello_callback(first_name, last_name) -> None:
-    logger.info(f'Hello, {first_name} {last_name}!')
+    print(f'Hello, {first_name} {last_name}!')
 
 
 def hello_callback_number_two() -> None:
-    logger.info('No arguments for this callback :(')
+    print('No arguments for this callback :(')
 
 
 def hello_callback_number_three(**kwargs) -> None:
-    logger.info(f'New callback passing arguments kwargs: {kwargs}')
+    print(f'New callback passing arguments kwargs: {kwargs}')
 
 
 def add_actions():
