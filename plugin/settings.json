@@ -1,6 +1,0 @@
-{
-    "plugins": [
-      "plugins.hello.hello",
-      "plugins.printer.printer"
-    ]
-}
