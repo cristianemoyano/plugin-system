@@ -1,4 +1,6 @@
 """
+Gitlab Registry
+
 Documentation:
 https://docs.gitlab.com/ee/user/packages/generic_packages/index.html
 

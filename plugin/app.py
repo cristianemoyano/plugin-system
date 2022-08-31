@@ -2,10 +2,12 @@
 Basic example showing how to run custom routines from data using a dynamic factory with
 activate/desactivate methods.
 """
+import logging
+import os
 
 from plugin_manager import functions, loader
 
-import os
+logger: logging.Logger = logging.getLogger(__name__)
 
 def get_import_name(directory) -> str:
     return f'plugins.{directory}'
@@ -18,9 +20,15 @@ def get_plugins_installed() -> list[str]:
 
 def main() -> None:
     """example app"""
+    # Setup main plugin
+    functions.setup()
+
+    # Perfom INIT_APP action: Should run only main plugin
+    functions.do_action(functions.AppHooks.INIT_APP)
+
     # Print plugins found
     plugins_installed: list[str] = list(get_plugins_installed())
-    print(f"Plugins found: {plugins_installed}")
+    logger.info(f"Plugins found: {plugins_installed}")
 
     # Load the plugins from directory
     loader.load_plugins(plugins_installed)

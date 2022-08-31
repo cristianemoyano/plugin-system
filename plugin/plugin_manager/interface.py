@@ -1,4 +1,7 @@
 from typing import Protocol
+import logging
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 class PluginInterface(Protocol):
@@ -31,3 +34,35 @@ class PluginInterface(Protocol):
     @staticmethod
     def register_uninstall_hook() -> None:
         pass
+
+
+
+class MainPlugin(PluginInterface):
+
+    class Meta:
+        plugin_name: str = '__mainplugin__'
+        is_enabled: bool = False
+    
+    @staticmethod
+    def setup_callback() -> None:
+        if MainPlugin.Meta.is_enabled is True:
+            logger.info("App already initiated.")
+        FORMAT: str = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        logging.basicConfig(level=logging.DEBUG, format=FORMAT, datefmt='%d-%b-%y %H:%M:%S')
+        logger.debug("App initiated")
+    
+    @staticmethod
+    def init_callback() -> None:
+        logger.debug("Init called")
+
+    @staticmethod
+    def register_activation_hook() -> None:
+        logger.debug(f"register_activation_hook: {MainPlugin.Meta.plugin_name}")
+
+    @staticmethod
+    def register_deactivation_hook() -> None:
+        logger.debug(f"register_deactivation_hook: {MainPlugin.Meta.plugin_name}")
+
+    @staticmethod
+    def register_uninstall_hook() -> None:
+        logger.debug(f"register_uninstall_hook: {MainPlugin.Meta.plugin_name}")

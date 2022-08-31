@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 from typing import Any, Protocol
+import logging
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -15,15 +18,15 @@ class PrinterPlugin:
 
     @staticmethod
     def register_activation_hook() -> None:
-        print(f"register_activation_hook: {PrinterPlugin.Meta.plugin_name}")
+        logger.debug(f"register_activation_hook: {PrinterPlugin.Meta.plugin_name}")
 
     @staticmethod
     def register_deactivation_hook() -> None:
-        print(f"register_deactivation_hook: {PrinterPlugin.Meta.plugin_name}")
+        logger.debug(f"register_deactivation_hook: {PrinterPlugin.Meta.plugin_name}")
 
     @staticmethod
     def register_uninstall_hook() -> None:
-        print(f"register_uninstall_hook: {PrinterPlugin.Meta.plugin_name}")
+        logger.debug(f"register_uninstall_hook: {PrinterPlugin.Meta.plugin_name}")
 
 
 def register() -> Protocol:
@@ -31,7 +34,7 @@ def register() -> Protocol:
 
 
 def printer_callback() -> None:
-    print(f'I am a printer!')
+    logger.info(f'I am a printer!')
 
 
 
