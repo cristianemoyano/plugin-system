@@ -4,6 +4,7 @@
 {% block content %}
 
 <main class="px-3">
+  
     <h1 class="m-3">Package list</h1>
     <hr>
 
@@ -106,6 +107,32 @@
           {% endfor %}
         </tbody>
       </table>
+
+      <h3>Hooks example</h3>
+      <div class="container">
+        <div class="card-group">
+          <div class="card">
+            <img src="https://kinsta.com/es/wp-content/uploads/sites/8/2017/10/wordpress-plugin-1.png" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title text-muted">
+                {% for h in hooks.card_title_hook %}
+                  <p>{{ h }}</p>
+                {% endfor %}
+              </h5>
+              <p class="card-text">
+                {% for h in hooks.card_text_hook %}
+                  <p class="text-black">{{ h }}</p>
+                {% endfor %}
+              </p>
+              <p class="card-text">
+                {% for h in hooks.card_small_text_hook %}
+                  <p class="text-black"><small class="text-muted">{{ h }}</small></p>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
      
 </main>
 

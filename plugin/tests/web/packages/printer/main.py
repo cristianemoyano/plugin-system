@@ -33,16 +33,40 @@ def register() -> Protocol:
     return PrinterPlugin
 
 
-def printer_callback() -> None:
-    logger.info(f'I am a printer!')
+
+class InternalHooks:
+    GET_CARD_TITLE: str = 'get_card_title'
+    GET_CARD_TEXT: str = 'get_card_text'
+    GET_CARD_SMALL_TEXT: str = 'get_card_small_text'
+
+# Actions
+
+def get_card_title_callback() -> None:
+    return 'A title from printer plugin'
+
+def get_card_text_callback() -> None:
+    return 'A card text from printer plugin'
+
+def get_card_small_text_callback() -> None:
+    return 'A smal text from printer plugin'
 
 
 
 def add_actions() -> list[dict[str, Any]]:
     return [
         {
-            'hook_name': 'init',
-            'callback': printer_callback,
+            'hook_name': InternalHooks.GET_CARD_TITLE,
+            'callback': get_card_title_callback,
+            'priority': 10,
+        },
+        {
+            'hook_name': InternalHooks.GET_CARD_TEXT,
+            'callback': get_card_text_callback,
+            'priority': 10,
+        },
+                {
+            'hook_name': InternalHooks.GET_CARD_SMALL_TEXT,
+            'callback': get_card_small_text_callback,
             'priority': 10,
         },
     ]

@@ -105,11 +105,20 @@ def add_action(hook_name: str, plugin: PluginInterface, callback: Callable, args
         'plugin': plugin,
     })
 
+def register_action(hook_name: str) -> None:
+    if hook_name in actions:
+        # Action already registered
+        return
+    actions[hook_name] = []
 
-def do_action(hook_name: str) -> None:
+
+def do_action(hook_name: str) -> dict:
     "Calls the callback functions that have been added to an action hook."
     hooks: list = actions[hook_name]
+    results: dict = {}
     for hook in hooks:
+        if hook.get('plugin') is None:
+            continue
         plugin: PluginInterface = hook['plugin']
         if get_meta_attr(plugin, 'plugin_name') not in activated_plugins:
             continue
@@ -117,8 +126,24 @@ def do_action(hook_name: str) -> None:
         callback: Callable = hook['callback']
         args: Any = hook['args']
         if isinstance(args, Mapping):
-            callback(**args)
+            try:
+                result: Any = callback(**args)
+            except Exception:
+                logger.exception(f"Something went wrong calling the callback for {hook_name} from {plugin}")
+                continue
+            results[get_meta_attr(plugin, 'plugin_name')] = result
         elif isinstance(args, Iterable):
-            callback(*args)
+            try:
+                result: Any = callback(*args)
+            except Exception:
+                logger.exception(f"Something went wrong calling the callback for {hook_name} from {plugin}")
+                continue
+            results[get_meta_attr(plugin, 'plugin_name')] = result
         else:
-            callback()
+            try:
+                result: Any = callback()
+            except Exception:
+                logger.exception(f"Something went wrong calling the callback for {hook_name} from {plugin}")
+                continue
+            results[get_meta_attr(plugin, 'plugin_name')] = result
+    return results

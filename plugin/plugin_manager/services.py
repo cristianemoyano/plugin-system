@@ -16,6 +16,12 @@ logger: logging.Logger = logging.getLogger(__name__)
 class PackageService:
 
     @staticmethod
+    def list_imports(path) -> list:
+        dir_list: list[str] = os.listdir(path)
+        dir_list.remove('__init__.py')
+        return map(lambda directory: f'{path}.{directory}', dir_list)
+
+    @staticmethod
     def list_packages(path) -> list:
         dir_list: list[str] = os.listdir(path)
         dir_list.remove('__init__.py')

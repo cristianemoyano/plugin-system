@@ -14,14 +14,44 @@ def setup_path() -> None:
 setup_path()
 
 from plugin_manager.services import PackageService
+from plugin_manager import functions, loader as plugin_loader
+
+# Setup main plugin
+functions.setup()
+
+plugins_installed: list = PackageService.list_imports('packages')
+
+# Load the plugins from directory
+plugin_loader.load_plugins(plugins_installed)
+
+# Activate plugins
+functions.activate('hello')
+functions.activate('printer')
+
+class InternalHooks:
+    GET_CARD_TITLE: str = 'get_card_title'
+    GET_CARD_TEXT: str = 'get_card_text'
+    GET_CARD_SMALL_TEXT: str = 'get_card_small_text'
+
+functions.register_action(InternalHooks.GET_CARD_TITLE)
+functions.register_action(InternalHooks.GET_CARD_TEXT)
+functions.register_action(InternalHooks.GET_CARD_SMALL_TEXT)
+
 
 def index(request) -> HttpResponse:
   plugins: list = PackageService.list_packages('packages')
   records: Any = Plugins.objects.all().values()
   template: Any = loader.get_template('index.html')
+  hooks: dict[str, str] = {
+      'card_title_hook': [hook for hook in functions.do_action(InternalHooks.GET_CARD_TITLE).values()],
+      'card_text_hook': [hook for hook in functions.do_action(InternalHooks.GET_CARD_TEXT).values()],
+      'card_small_text_hook': [hook for hook in functions.do_action(InternalHooks.GET_CARD_SMALL_TEXT).values()],
+  }
+
   context: dict[str, Any] = {
     'records': records,
     'plugins': plugins,
+    'hooks': hooks,
   }
   return HttpResponse(template.render(context, request))
 

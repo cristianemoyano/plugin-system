@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Any, Protocol
 
 
 @dataclass
@@ -29,39 +29,39 @@ def register() -> Protocol:
     return HelloPlugin
 
 
-def hello_callback(first_name, last_name) -> None:
-    print(f'Hello, {first_name} {last_name}!')
+class InternalHooks:
+    GET_CARD_TITLE: str = 'get_card_title'
+    GET_CARD_TEXT: str = 'get_card_text'
+    GET_CARD_SMALL_TEXT: str = 'get_card_small_text'
+
+# Actions
+
+def get_card_title_callback() -> None:
+    return 'A title from hello plugin '
+
+def get_card_text_callback() -> None:
+    return 'A card text from hello plugin'
+
+def get_card_small_text_callback() -> None:
+    return 'A smal text from hello plugin'
 
 
-def hello_callback_number_two() -> None:
-    print('No arguments for this callback :(')
 
-
-def hello_callback_number_three(**kwargs) -> None:
-    print(f'New callback passing arguments kwargs: {kwargs}')
-
-
-def add_actions():
+def add_actions() -> list[dict[str, Any]]:
     return [
         {
-            'hook_name': 'init',
-            'callback': hello_callback,
-            'args': ['john', 'doe'],
+            'hook_name': InternalHooks.GET_CARD_TITLE,
+            'callback': get_card_title_callback,
             'priority': 10,
         },
         {
-            'hook_name': 'init',
-            'callback': hello_callback_number_two,
+            'hook_name': InternalHooks.GET_CARD_TEXT,
+            'callback': get_card_text_callback,
             'priority': 10,
         },
-        {
-            'hook_name': 'init',
-            'callback': hello_callback_number_three,
-            'args': {
-                'arg1': 1,
-                'arg2': 2,
-                'arg3': 3,
-            },
+                {
+            'hook_name': InternalHooks.GET_CARD_SMALL_TEXT,
+            'callback': get_card_small_text_callback,
             'priority': 10,
-        }
+        },
     ]
