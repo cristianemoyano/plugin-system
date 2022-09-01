@@ -4,14 +4,8 @@
 {% block content %}
 
 <main class="px-3">
-    <h1>Package list</h1>
-
-
-
-
-
-
-    
+    <h1 class="m-3">Package list</h1>
+    <hr>
 
     <div class="row">
       <div class="col-4">
@@ -85,7 +79,7 @@
     <div id="results" class="m-3"></div>
 
 
-    <p class="lead mt-3">These are the plugins found in the package folder.</p>
+    <p class="lead m-4">These are the plugins found in the package folder.</p>
     <table class="table text-white">
         <thead>
           <tr>
@@ -112,27 +106,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <hr>
-      <h1>Plugin records</h1>
-      <p class="lead">These are the plugins found in the database.</p>
-      <table class="table text-white">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Version</th>
-            </tr>
-          </thead>
-          <tbody>
-              {% for p in records %}
-            <tr>
-              <td>{{ p.id }}</td>
-              <td>{{ p.name }}</td>
-              <td>{{ p.version }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+     
 </main>
 
 {% endblock %}
