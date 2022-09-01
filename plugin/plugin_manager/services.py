@@ -47,6 +47,7 @@ class PackageService:
         }
         res: response = requests.get(url, headers=headers)
         if res.status_code == 200:
+            logger.info(f"Package downloaded {url}")
             destination: Path = Path(output_dir)
             if destination.is_dir():
                 # check if directory exists
@@ -65,7 +66,12 @@ class PackageService:
             'PRIVATE-TOKEN': os.environ.get('GITLAB_PRIVATE_TOKEN')
         }
         fileobj: object = open(path_file, 'rb')
-        return requests.put(url, headers=headers, data=fileobj.read())
+        res: response = requests.put(url, headers=headers, data=fileobj.read())
+        if res.status_code == 200:
+            logger.info(f"Package uploaded {url}")
+        else:
+            logger.exception(f"Something went wrong uploading package: {url}. Error: {res.content}")
+            raise Exception(f"Error {res.status_code}")
 
     @staticmethod
     def zip_package(output_filename: str, dir_name: str) -> None:
