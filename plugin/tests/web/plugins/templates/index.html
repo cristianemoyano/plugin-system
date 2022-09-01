@@ -28,24 +28,42 @@
             <form id="download-form">
               {% csrf_token %}
               <div class="mb-3">
-                <label for="package-name" class="form-label">Download Package name</label>
-                <input type="text" class="form-control" id="download-package-name" required>
+                <label for="project-id" class="form-label">Project ID</label>
+                <input type="text" class="form-control" id="download-project-id" value='39007614' required>
+
+                <label for="package-name" class="form-label">Package name</label>
+                <input type="text" class="form-control" id="download-package-name" value="hello" required>
+
+                <label for="package-version" class="form-label">Version</label>
+                <input type="text" class="form-control" id="download-package-version" value="0.0.2" required>
+
+                <label for="file-name" class="form-label">File name</label>
+                <input type="text" class="form-control" id="download-file-name" value="hello.zip" required>
               </div>
               <button type="submit" class="btn btn-primary">Download</button>
             </form>
             <!-- END FORM -->
           </div>
           <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-            <!-- UPLOAD FORM -->
-            <form id="upload-form">
-              {% csrf_token %}
-              <div class="mb-3">
-                <label for="package-name" class="form-label">Upload Package name</label>
-                <input type="text" class="form-control" id="upload-package-name" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
-            <!-- END FORM -->
+           <!-- UPLOAD FORM -->
+           <form id="upload-form">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="project-id" class="form-label">Project ID</label>
+              <input type="text" class="form-control" id="upload-project-id" value='39007614' required>
+
+              <label for="package-name" class="form-label">Package name</label>
+              <input type="text" class="form-control" id="upload-package-name" value="hello" required>
+
+              <label for="package-version" class="form-label">Version</label>
+              <input type="text" class="form-control" id="upload-package-version" value="0.0.2" required>
+
+              <label for="file-name" class="form-label">File name</label>
+              <input type="text" class="form-control" id="upload-file-name" value="hello.zip" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </form>
+          <!-- END FORM -->
           </div>
           <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
             <!-- ZIP FORM -->
@@ -53,7 +71,7 @@
               {% csrf_token %}
               <div class="mb-3">
                 <label for="package-name" class="form-label">Zip Package name</label>
-                <input type="text" class="form-control" id="zip-package-name" required>
+                <input type="text" class="form-control" id="zip-package-name" value="hello" required>
               </div>
               <button type="submit" class="btn btn-primary">Zip</button>
             </form>
@@ -63,6 +81,8 @@
         </div>
       </div>
     </div>
+
+    <div id="results" class="m-3"></div>
 
 
     <p class="lead mt-3">These are the plugins found in the package folder.</p>

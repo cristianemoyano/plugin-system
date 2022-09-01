@@ -1,9 +1,12 @@
 """A simple plugin loader."""
 import importlib
 from typing import Any
+import logging
 
 from plugin_manager.interface import PluginInterface
 from plugin_manager import functions
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 class ModuleInterface:
     """Represents a plugin interface"""
@@ -41,7 +44,11 @@ def load_plugins(plugins: list[str]) -> None:
     """Loads the plugins defined in the plugins list."""
     for plugin_file in plugins:
         # Import plugin
-        plugin_module: ModuleInterface = import_plugin_module(plugin_file)
+        try:
+            plugin_module: ModuleInterface = import_plugin_module(plugin_file)
+        except ModuleNotFoundError as exc:
+            logger.exception(f"Something went wrong trying to import the plugin: '{plugin_file}' . Error: {exc}")
+            continue
         # Get the main plugin class
         plugin_class: PluginInterface = plugin_module.register()
         # Register the plugin
