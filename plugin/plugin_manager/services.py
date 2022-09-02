@@ -1,5 +1,6 @@
 import io
 import logging
+import json
 import os
 from pathlib import Path
 import shutil
@@ -20,6 +21,19 @@ class PackageService:
         dir_list: list[str] = os.listdir(path)
         dir_list.remove('__init__.py')
         return map(lambda directory: f'{path}.{directory}', dir_list)
+    
+    @staticmethod
+    def list_remote_packages(url:str) -> list:
+        headers: dict = {
+            'PRIVATE-TOKEN': os.environ.get('GITLAB_PRIVATE_TOKEN')
+        }
+        res: response = requests.get(url, headers=headers)
+        if res.status_code == 200:
+            logger.info(f"Package downloaded {url}")
+            return json.loads(res.content)
+        else:
+            logger.exception(f"Something went wrong listing packages: {url}. Error: {res.content}")
+            raise Exception(f"Error {res.status_code}")
 
     @staticmethod
     def list_packages(path) -> list:
@@ -45,6 +59,10 @@ class PackageService:
     @staticmethod
     def get_upload_url(project_id: str, package_name: str, package_version: str, file_name: str) -> str:
         return f'https://gitlab.com/api/v4/projects/{project_id}/packages/generic/{package_name}/{package_version}/{file_name}'
+    
+    @staticmethod
+    def get_list_remote_packages_url(project_id: str) -> str:
+        return f'https://gitlab.com/api/v4/projects/{project_id}/packages'
 
     @staticmethod
     def download_package(url: str, output_dir:str) -> None:
